@@ -1,0 +1,22 @@
+{
+    "NUMAKER_M483KG": {
+        "inherits": [
+            "MCU_M480"
+        ],
+        "device_name": "M483KGCAE2A",
+        "detect_code": [
+            "1301"
+        ],
+        "overrides": {
+            "usb-uart": "UART_0",
+            "usb-uart-tx": "PB_13",
+            "usb-uart-rx": "PB_12",
+            "spim-ccm-enable": 0,
+            "network-default-interface-type": null
+        },
+        "mbed_rom_start": "0x0",
+        "mbed_rom_size": "0x40000",
+        "mbed_ram_start": "0x20000000",
+        "mbed_ram_size": "0x20000"
+    }
+}

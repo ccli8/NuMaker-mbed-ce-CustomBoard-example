@@ -4,11 +4,13 @@ This is an example to instruct how to add custom board support on Nuvoton's Mbed
 This support has the following prerequisites:
 
 -   The MCU series the custom board bases on must have been supported on Mbed OS, usually through Mbed-Enabled boards.
--   The Mbed OS implemntations for the MCU series must enable capability of being configurable to some degree.
+-   The Mbed OS implementations for the MCU series must enable capability of being configurable to some degree.
 
 ## Support custom boards
 
--   NuMaker-M483KG
+-   NuMaker-M483KG  ( Target = NUMAKER_M483KG )
+    
+-   NuMaker-IOT-M2354  ( Target = NU_IOT_M2354 )
 
 ## Hardware requirements
 

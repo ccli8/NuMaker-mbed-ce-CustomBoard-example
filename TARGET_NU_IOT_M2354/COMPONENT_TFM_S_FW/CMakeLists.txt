@@ -9,7 +9,7 @@ target_link_libraries(mbed-m2354-tfm
 )
 
 mbed_post_build_nuvoton_tfm_sign_image_tgt(
-    NU_M2354
+    NU_IOT_M2354
     ${CMAKE_CURRENT_SOURCE_DIR}
     nuvoton_m2354-root-rsa-3072.pem
 )

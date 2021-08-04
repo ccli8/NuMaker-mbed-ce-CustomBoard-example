@@ -15,6 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/* MBED TARGET LIST: NUMAKER_PFM_M487 */
+
 #ifndef MBED_PINNAMES_H
 #define MBED_PINNAMES_H
 
@@ -61,30 +64,30 @@ typedef enum {
     D11 = PA_0,
     D12 = PA_1,
     D13 = PA_2,
-    D14 = PC_0,
-    D15 = PC_1,
+    D14 = PG_1,
+    D15 = PG_0,
 
     // Note: board-specific
     // UART naming
 #if defined(MBED_CONF_TARGET_USB_UART_TX)
-    USBTX           = MBED_CONF_TARGET_USB_UART_TX,
+    CONSOLE_TX           = MBED_CONF_TARGET_USB_UART_TX,
 #else
-    USBTX           = NC,
+    CONSOLE_TX           = NC,
 #endif
 #if defined(MBED_CONF_TARGET_USB_UART_RX)
-    USBRX           = MBED_CONF_TARGET_USB_UART_RX,
+    CONSOLE_RX           = MBED_CONF_TARGET_USB_UART_RX,
 #else
-    USBRX           = NC,
+    CONSOLE_RX           = NC,
 #endif
 #if defined(MBED_CONF_TARGET_STDIO_UART_TX)
     STDIO_UART_TX   = MBED_CONF_TARGET_STDIO_UART_TX,
 #else
-    STDIO_UART_TX   = USBTX,
+    STDIO_UART_TX   = CONSOLE_TX,
 #endif
 #if defined(MBED_CONF_TARGET_STDIO_UART_RX)
     STDIO_UART_RX   = MBED_CONF_TARGET_STDIO_UART_RX,
 #else
-    STDIO_UART_RX   = USBRX,
+    STDIO_UART_RX   = CONSOLE_RX,
 #endif
     SERIAL_TX = D10,
     SERIAL_RX = D13,
@@ -94,18 +97,19 @@ typedef enum {
     I2C_SDA = D14,
 
     // LED naming
-    LED_RED = PH_4,
-    LED_YELLOW = PH_5,
-    LED_GREEN = PH_6,
+    LED_RED = PH_0,
+    LED_YELLOW = PH_1,
+    LED_GREEN = PH_2,
     LED1 = LED_RED,
     LED2 = LED_YELLOW,
     LED3 = LED_GREEN,
+    LED4 = LED1,    // No real LED. Just for passing ATS.
 
     // Button naming
-    SW3 = PG_15,
-    SW4 = PG_14,
-    BUTTON1 = SW3,
-    BUTTON2 = SW4,
+    SW2 = PG_15,
+    SW3 = PF_11,
+    BUTTON1 = SW2,
+    BUTTON2 = SW3,
 
     // Force PinName to 32-bit required by NU_PINNAME_BIND(...)
     FORCE_ENUM_PINNAME_32BIT = 0x7FFFFFFF,

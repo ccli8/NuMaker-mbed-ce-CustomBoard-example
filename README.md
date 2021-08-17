@@ -124,11 +124,17 @@ The `targets.json` file (located in `mbed-os/targets/targets.json`) is necessary
 
     **Note**: Check M480 Selection Code in M480 datasheet for actual memory size.
 
-1.  Build the example on NUMAKER_M483KG/ARMC6:
+1.  Build the example on NUMAKER_M483KG/ARMCC or GCC:
+    1.  Build code by CLI1.
     ```sh
     $ mbed compile -m NUMAKER_M483KG -t ARMC6
+    $ mbed compile -m NUMAKER_M483KG -t GCC_ARM   
     ```
-
+    1.  Build code by CLI2.
+    ```sh
+    $ mbed-tools compile -m NUMAKER_M483KG -t ARM
+    $ mbed-tools compile -m NUMAKER_M483KG -t GCC_ARM
+    ```
 1.  Flash by drag-n-drop built image onto **NuMaker-M483KG** board
 
 1.  We should see the red LED on **NuMaker-M483KG** board is blinking. On host terminal (115200/8-N-1), we should see messages:

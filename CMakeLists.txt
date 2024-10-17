@@ -1,25 +1,47 @@
-# Copyright (c) 2020 ARM Limited. All rights reserved.
+# Copyright (c) 2022 ARM Limited. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-cmake_minimum_required(VERSION 3.19.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.19)
+cmake_policy(VERSION 3.19)
 
-set(MBED_PATH ${CMAKE_CURRENT_SOURCE_DIR}/mbed-os CACHE INTERNAL "")
-set(MBED_CONFIG_PATH ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "")
-set(APP_TARGET NuMaker-mbed-CustomBoard-example)
+set(MBED_OS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/mbed-os CACHE INTERNAL "")
 
-include(${MBED_PATH}/tools/cmake/app.cmake)
+# Set path for mbed_app.json5
+set(MBED_APP_JSON_PATH mbed_app.json5)
 
-project(${APP_TARGET})
+# Set path for custom_targets.json5
+set(CUSTOM_TARGETS_PATH custom_targets) 
+set(CUSTOM_TARGETS_JSON_PATH ${CUSTOM_TARGETS_PATH}/custom_targets.json5) 
 
-add_subdirectory(${MBED_PATH})
+# Load Mbed CE toolchain file and basic build system
+include(${MBED_OS_PATH}/tools/cmake/app.cmake)
+
+set(APP_PROJECT NUMAKER_MBED_CE_CUSTOMBOARD_EXAMPLE)
+set(APP_TARGET NuMaker-mbed-ce-CustomBoard-example)
+
+# Set up project name
+project(${APP_PROJECT})
+
+# Add Nuvoton CMake list files to CMake default module path
+#
+# Normally, this is added in ${MBED_OS_PATH}, but ${CUSTOM_TARGETS_PATH}
+# is in front and needs it.
+list(APPEND CMAKE_MODULE_PATH
+    ${MBED_OS_PATH}/targets/TARGET_NUVOTON/scripts
+)
+
+# Add for custom targets
+add_subdirectory(${CUSTOM_TARGETS_PATH})
+
+# Add Mbed OS library
+add_subdirectory(${MBED_OS_PATH})
+
+# Add RHE6616TP01 LCD
+if("COMPONENT_RHE6616TP01_LCD=1" IN_LIST MBED_TARGET_DEFINITIONS)
+    add_subdirectory(drivers/COMPONENT_RHE6616TP01_LCD)
+endif()
 
 add_executable(${APP_TARGET})
-
-# Provide Mbed OS with the header file it needs to configure Mbed TLS for LoRa
-target_include_directories(${APP_TARGET}
-    PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}
-)
 
 target_sources(${APP_TARGET}
     PRIVATE
@@ -29,37 +51,11 @@ target_sources(${APP_TARGET}
 target_link_libraries(${APP_TARGET}
     PRIVATE
         mbed-os
+        $<$<IN_LIST:COMPONENT_RHE6616TP01_LCD=1,${MBED_TARGET_DEFINITIONS}>:rhe6616tp01-lcd>
 )
 
-# Custom target
-
-
-if("NUMAKER_M483KG" IN_LIST MBED_TARGET_LABELS)
-    add_library(mbed-numaker-m483kg INTERFACE)
-    target_include_directories(mbed-numaker-m483kg
-        INTERFACE
-            TARGET_NUMAKER_M483KG
-    )
-    target_link_libraries(mbed-numaker-m483kg INTERFACE mbed-m480)
-endif()
-
-if("NU_IOT_M2354" IN_LIST MBED_TARGET_LABELS)
-    add_library(mbed-nu-iot-m2354 INTERFACE)
-    add_subdirectory(TARGET_NU_IOT_M2354)
-    target_include_directories(mbed-nu-iot-m2354
-        INTERFACE
-            TARGET_NU_IOT_M2354
-    )
-    target_link_libraries(mbed-nu-iot-m2354
-        INTERFACE
-            mbed-m2354
-            mbed-m2354-tfm
-    )
-endif()
-
+# Must call this for each target to set up bin file creation, code upload, etc
 mbed_set_post_build(${APP_TARGET})
 
-option(VERBOSE_BUILD "Have a verbose build process")
-if(VERBOSE_BUILD)
-    set(CMAKE_VERBOSE_MAKEFILE ON)
-endif()
+# Make sure this is the last line of the top-level build script
+mbed_finalize_build()

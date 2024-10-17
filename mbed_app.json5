@@ -4,6 +4,9 @@
         "*": {
             "platform.stdio-baud-rate"                  : 115200,
             "platform.stdio-convert-newlines"           : true
+        },
+        "NU_IOT_M2354": {
+            "target.components_add"                     : ["RHE6616TP01_LCD"]
         }
     },
     "config": {}
